@@ -3,25 +3,25 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class MatrixBuilderTest {
+public class MatrixTest {
 
-    private MatrixBuilder matrixBuilder;
+    private Matrix matrix;
 
     @Before
     public void setup() {
-        matrixBuilder = new MatrixBuilder();
+        matrix = new Matrix();
     }
 
     @Test
     public void itValidatesMatrixColumnSize() {
-        assertFalse(matrixBuilder.addRow(new Row()));
+        assertFalse(matrix.addRow(new Row()));
         int[] tooBig = new int[Settings.COLUMN_MAX + 1];
-        assertFalse(matrixBuilder.addRow(new Row(tooBig)));
+        assertFalse(matrix.addRow(new Row(tooBig)));
         int[] min = new int[Settings.COLUMN_MIN];
         int[] max = new int[Settings.COLUMN_MAX];
-        assertTrue(matrixBuilder.addRow(new Row(min)));
-        matrixBuilder.reset();
-        assertTrue(matrixBuilder.addRow(new Row(max)));
+        assertTrue(matrix.addRow(new Row(min)));
+        matrix.reset();
+        assertTrue(matrix.addRow(new Row(max)));
     }
 
     @Test
@@ -31,20 +31,20 @@ public class MatrixBuilderTest {
             for (int cI = 0; cI < Settings.COLUMN_MAX; cI++) {
                 rowValues[cI] = cI;
             }
-            assertTrue(matrixBuilder.addRow(new Row(rowValues)));
+            assertTrue(matrix.addRow(new Row(rowValues)));
         }
-        assertEquals(Settings.ROW_MAX, matrixBuilder.getRowCount());
+        assertEquals(Settings.ROW_MAX, matrix.getRowCount());
         for (int rI = 0; rI < Settings.ROW_MAX; rI++) {
             for (int cI = 0; cI < Settings.COLUMN_MAX; cI++) {
-                assertEquals(cI, matrixBuilder.getMatrixValue(rI, cI));
+                assertEquals(cI, matrix.getMatrixValue(rI, cI));
             }
         }
     }
 
     @Test
     public void itRejectsChangesInColumnCount() {
-        assertTrue(matrixBuilder.addRow(new Row(new int[Settings.COLUMN_MAX])));
-        assertFalse(matrixBuilder.addRow(new Row(new int[Settings.COLUMN_MIN])));
+        assertTrue(matrix.addRow(new Row(new int[Settings.COLUMN_MAX])));
+        assertFalse(matrix.addRow(new Row(new int[Settings.COLUMN_MIN])));
     }
 
 

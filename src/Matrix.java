@@ -1,11 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class MatrixBuilder {
+public class Matrix {
 
     private List<Row> matrix;
 
-    public MatrixBuilder() {
+    public Matrix() {
         reset();
     }
 
@@ -32,16 +32,15 @@ public class MatrixBuilder {
         return matrix.get(r).getColumnValue(c);
     }
 
-    //    public void print() {
-//        for (int rI = 0; rI < matrix.size(); rI++) {
-//            System.out.println("");
-//            for (int cI = 0; cI < matrix.get(0).size(); cI++) {
-//                System.out.printf("%s |", getMatrixValue(rI, cI));
-//            }
-//        }
-//    }
-
     public void reset() {
         matrix = new ArrayList<>();
+    }
+
+    public int getColumnCount() {
+        return matrix.size() > 0 ? matrix.get(0).size() : 0;
+    }
+
+    public int getMatrixValue(CostFinder.Cursor cursor) {
+        return getMatrixValue(cursor.getRow(), cursor.getColumn());
     }
 }
