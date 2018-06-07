@@ -4,6 +4,7 @@ import java.util.List;
 public class Path implements Comparable<Path> {
 
     private List<Point> points = new ArrayList<>();
+    private boolean forcedComplete = false;
 
     public int getCost() {
         int cost = 0;
@@ -14,16 +15,30 @@ public class Path implements Comparable<Path> {
     }
 
     public Path addPoint(int row, int column, int cost) {
-        points.add(new Point(row, column, cost));
+        Point point = new Point(row, column, cost);
+        if (cost + getCost() > Settings.MAX_COST) {
+            forcedComplete = true;
+        } else if (isValidPoint(point)) {
+            points.add(point);
+        }
         return this;
+    }
+
+    private boolean isValidPoint(Point point) {
+        if (points.isEmpty()) {
+            return true;
+        } else if (point.column == points.get(points.size() - 1).column + 1) {
+            return true;
+        }
+        return false;
     }
 
     public void print() {
         String pstr = "";
         for (Point p : points) {
-            pstr += (p.row + 1) + ",";
+            pstr += (p.row) + "," + p.column + " [" + p.cost + "] | ";
         }
-        System.out.printf("%s - %d%n", pstr, getCost());
+        System.out.printf("~~~%s - %d%n", pstr, getCost());
     }
 
     public static Path fromPath(Path path) {
@@ -40,7 +55,7 @@ public class Path implements Comparable<Path> {
     }
 
     public boolean isComplete(Matrix matrix) {
-        return points.size() == matrix.getColumnCount();
+        return forcedComplete || isFullPath(matrix);
     }
 
     public int[] getOneBasedRows() {
@@ -49,6 +64,14 @@ public class Path implements Comparable<Path> {
             rows[i] = points.get(i).row + 1;
         }
         return rows;
+    }
+
+    public boolean isFullPath(Matrix matrix) {
+        return points.size() == matrix.getColumnCount();
+    }
+
+    public int size() {
+        return points.size();
     }
 
     public class Point {

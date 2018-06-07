@@ -6,15 +6,30 @@ public class CostFinder {
     public Path getLeastCostPath(Matrix matrix) {
 
         Path leastCostPath = null;
-        Cursor[] cursors = new Cursor[matrix.getRowCount()];
         List<Path> paths = new ArrayList<>();
+        Cursor[] cursors = new Cursor[matrix.getRowCount()];
+
         for (int i = 0; i < cursors.length; i++) {
             cursors[i] = new Cursor(i, 0);
             paths.addAll(cursors[i].discoverPaths(matrix, null));
         }
-        Collections.sort(paths);
+        if (hasFullPath(paths, matrix)) {
+            Collections.sort(paths);
+        } else {
+            paths.sort((o1, o2) -> o2.size() - o1.size());
+        }
         leastCostPath = paths.isEmpty() ? null : paths.get(0);
+
         return leastCostPath;
+    }
+
+    private boolean hasFullPath(List<Path> paths, Matrix matrix) {
+        for (Path p : paths) {
+            if (p.isFullPath(matrix)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public class Cursor {
@@ -29,7 +44,8 @@ public class CostFinder {
         public List<Path> discoverPaths(Matrix matrix, Path startPath) {
             List<Path> paths = new ArrayList<>();
             Path path = startPath == null ? new Path() : Path.fromPath(startPath);
-            path.addPoint(row, column, matrix.getMatrixValue(this));
+
+            path.addPoint(row, column, matrix.getMatrixValue(row, column));
             if (path.isComplete(matrix)) {
                 paths.add(path);
             } else {

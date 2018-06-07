@@ -5,7 +5,7 @@ public class PathResult {
     private final int[] oneBasedRows;
 
     public PathResult(Path path, Matrix matrix) {
-        this(path.getCost(), path.isComplete(matrix), path.getOneBasedRows());
+        this(path.getCost(), path.isFullPath(matrix), path.getOneBasedRows());
     }
 
     public PathResult(int cost, boolean isFullPath, int[] oneBasedRows) {

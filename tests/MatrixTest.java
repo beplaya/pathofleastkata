@@ -47,5 +47,14 @@ public class MatrixTest {
         assertFalse(matrix.addRow(new Row(new int[Settings.COLUMN_MIN])));
     }
 
+    @Test
+    public void itGetsCost() {
+        Matrix matrix = new Matrix();
+        matrix.addRow(new Row(19, 10, 19, 10, 19));
+        matrix.addRow(new Row(21, 23, 20, 19, 12));
+        matrix.addRow(new Row(20, 12, 20, 11, 10));
 
+        assertEquals(20, matrix.getMatrixValue(2,2));
+        assertEquals(20, matrix.getMatrixValue(2,2));
+    }
 }
