@@ -33,14 +33,6 @@ public class Path implements Comparable<Path> {
         return false;
     }
 
-    public void print() {
-        String pstr = "";
-        for (Point p : points) {
-            pstr += (p.row) + "," + p.column + " [" + p.cost + "] | ";
-        }
-        System.out.printf("~~~%s - %d%n", pstr, getCost());
-    }
-
     public static Path fromPath(Path path) {
         Path newPath = new Path();
         for (Point pt : path.points) {
