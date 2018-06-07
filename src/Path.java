@@ -43,6 +43,14 @@ public class Path implements Comparable<Path> {
         return points.size() == matrix.getColumnCount();
     }
 
+    public int[] getOneBasedRows() {
+        int[] rows = new int[points.size()];
+        for (int i = 0; i < rows.length; i++) {
+            rows[i] = points.get(i).row + 1;
+        }
+        return rows;
+    }
+
     public class Point {
         public final int row;
         public final int column;
