@@ -1,9 +1,9 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Path {
+public class Path implements Comparable<Path> {
 
-    List<Point> points = new ArrayList<>();
+    private List<Point> points = new ArrayList<>();
 
     public int getCost() {
         int cost = 0;
@@ -14,28 +14,33 @@ public class Path {
     }
 
     public Path addPoint(int row, int column, int cost) {
-       return addPoint(new Point(row, column, cost));
+        points.add(new Point(row, column, cost));
+        return this;
     }
 
     public void print() {
-        System.out.println("");
+        String pstr = "";
         for (Point p : points) {
-            System.out.printf("%s,%s - %s%n", p.row+1, p.column+1, p.cost);
+            pstr += (p.row + 1) + ",";
         }
-        System.out.println(getCost());
+        System.out.printf("%s - %d%n", pstr, getCost());
     }
 
     public static Path fromPath(Path path) {
         Path newPath = new Path();
-        for (Point pt: path.points) {
-            path.addPoint(pt);
+        for (Point pt : path.points) {
+            newPath.addPoint(pt.row, pt.column, pt.cost);
         }
         return newPath;
     }
 
-    private Path addPoint(Point pt) {
-        points.add(pt);
-        return this;
+    @Override
+    public int compareTo(Path otherPath) {
+        return this.getCost() - otherPath.getCost();
+    }
+
+    public boolean isComplete(Matrix matrix) {
+        return points.size() == matrix.getColumnCount();
     }
 
     public class Point {
