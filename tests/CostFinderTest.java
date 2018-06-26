@@ -13,23 +13,31 @@ public class CostFinderTest {
     }
 
     @Test
-    public void itFindsAPathCost() {
-        Matrix matrix1 = getTestMatrix1();
-        Path path = costFinder.getLeastCostPath(matrix1);
-        path.print();
+    public void itFindsAPath() {
+        verifyMatrix(new PathResult(16, true, new int[]{1, 2, 3, 4, 4, 5}), TestMatrices.getTestMatrixYes16_123445());
+        verifyMatrix(new PathResult(11, true, new int[]{1, 2, 1, 5, 4, 5}), TestMatrices.getTestMatrixYes11_121545());
+    }
+
+    @Test
+    public void itDoesntFindAPath() {
+        verifyMatrix(new PathResult(50, false, new int[]{1, 3, 1}), TestMatrices.getTestMatrixNo50_131());
+    }
+
+    private void verifyMatrix(PathResult expectedPathResult, Matrix matrix) {
+        Path path = costFinder.getLeastCostPath(matrix);
         assertNotNull(path);
-        assertEquals(16, path.getCost());
+        PathResult actualPathResult = new PathResult(path, matrix);
+        assertEquals(expectedPathResult.isFullPath, actualPathResult.isFullPath);
+        assertEquals(expectedPathResult.cost, actualPathResult.cost);
+        assertArray(expectedPathResult.getOneBasedRows(), actualPathResult.getOneBasedRows());
     }
 
-    private Matrix getTestMatrix1() {
-        Matrix matrix = new Matrix();
-        matrix.addRow(new Row(3, 4, 1, 2, 8, 6));
-        matrix.addRow(new Row(6, 1, 8, 2, 7, 4));
-        matrix.addRow(new Row(5, 9, 3, 9, 9, 5));
-        matrix.addRow(new Row(8, 4, 1, 3, 2, 6));
-        matrix.addRow(new Row(3, 7, 2, 8, 6, 4));
-
-        return matrix;
+    private void assertArray(int[] expected, int[] actual) {
+        assertEquals(expected.length, actual.length);
+        for (int i = 0; i < expected.length; i++) {
+            assertEquals(expected[i], actual[i]);
+        }
     }
+
 
 }

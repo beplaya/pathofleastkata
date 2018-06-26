@@ -1,9 +1,10 @@
 import java.util.ArrayList;
 import java.util.List;
 
-public class Path {
+public class Path implements Comparable<Path> {
 
-    List<Point> points = new ArrayList<>();
+    private List<Point> points = new ArrayList<>();
+    private boolean forcedComplete = false;
 
     public int getCost() {
         int cost = 0;
@@ -14,28 +15,55 @@ public class Path {
     }
 
     public Path addPoint(int row, int column, int cost) {
-       return addPoint(new Point(row, column, cost));
+        Point point = new Point(row, column, cost);
+        if (cost + getCost() > Settings.MAX_COST) {
+            forcedComplete = true;
+        } else if (isValidPoint(point)) {
+            points.add(point);
+        }
+        return this;
     }
 
-    public void print() {
-        System.out.println("");
-        for (Point p : points) {
-            System.out.printf("%s,%s - %s%n", p.row+1, p.column+1, p.cost);
+    private boolean isValidPoint(Point point) {
+        if (points.isEmpty()) {
+            return true;
+        } else if (point.column == points.get(points.size() - 1).column + 1) {
+            return true;
         }
-        System.out.println(getCost());
+        return false;
     }
 
     public static Path fromPath(Path path) {
         Path newPath = new Path();
-        for (Point pt: path.points) {
-            path.addPoint(pt);
+        for (Point pt : path.points) {
+            newPath.addPoint(pt.row, pt.column, pt.cost);
         }
         return newPath;
     }
 
-    private Path addPoint(Point pt) {
-        points.add(pt);
-        return this;
+    @Override
+    public int compareTo(Path otherPath) {
+        return this.getCost() - otherPath.getCost();
+    }
+
+    public boolean isComplete(Matrix matrix) {
+        return forcedComplete || isFullPath(matrix);
+    }
+
+    public int[] getOneBasedRows() {
+        int[] rows = new int[points.size()];
+        for (int i = 0; i < rows.length; i++) {
+            rows[i] = points.get(i).row + 1;
+        }
+        return rows;
+    }
+
+    public boolean isFullPath(Matrix matrix) {
+        return points.size() == matrix.getColumnCount();
+    }
+
+    public int size() {
+        return points.size();
     }
 
     public class Point {

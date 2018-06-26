@@ -40,7 +40,4 @@ public class Matrix {
         return matrix.size() > 0 ? matrix.get(0).size() : 0;
     }
 
-    public int getMatrixValue(CostFinder.Cursor cursor) {
-        return getMatrixValue(cursor.getRow(), cursor.getColumn());
-    }
 }
