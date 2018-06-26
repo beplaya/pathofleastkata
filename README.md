@@ -1,4 +1,6 @@
 
+# See: https://github.com/beplaya/pathofleastkata/blob/master/pathofleastkata.pdf for better kata instructions.
+
 The point of this kata is to help us understand how you think, code, test, and communicate. You may craft your solution as either an Android app using Android Studio, or an iOS app using Swift and Xcode. Your deliverable is the source code and project files to your solution along with instructions on how we run your code. It is important that your code is test driven using a unit/integration test framework.
 All problems require some kind of input. You are free to implement any mechanism for feeding input into your solution (for example, using hard coded data within an automated test). You should provide sufficient evidence that your solution is complete by, as a minimum, indicating that it works correctly against the supplied test data. There should also be a user interface where we can enter data for small matrices (up to 10 rows by 10 columns).
 Although there is a right answer for the data, there is no right answer about presentation. Your submission should be written in a way that you find satisfying for yourself. When crafting your solution, remember that we value TDD-ed code, and spend more time reviewing your code than checking out its GUI goodness.
